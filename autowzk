@@ -1,0 +1,190 @@
+#!/usr/bin/env bash
+# Script Name: autowzk
+# Written by Ethan Chan - https://github.com/metakirby5
+# Heavily modified by fullsalvo
+# Runs colorz2 on an image file to get 8 colors, then stuffs those colors
+# through wzk.
+# Dependency: color2 - https;//github.com/metakirby5/colorz2
+
+SRC=~/.autowzk
+
+COLORS=(
+    black
+    red
+    green
+    yellow
+    blue
+    magenta
+    cyan
+    white
+)
+
+read -r -d '' TEMPLATE << EOM
+wallpapers: "%s"
+
+name:           "%s"
+colors:
+  primary:      "%s"
+  secondary:    "%s"
+  black:
+    normal:     "%s"
+    bold:       "%s"
+  red:
+    normal:     "%s"
+    bold:       "%s"
+  green:
+    normal:     "%s"
+    bold:       "%s"
+  yellow:
+    normal:     "%s"
+    bold:       "%s"
+  blue:
+    normal:     "%s"
+    bold:       "%s"
+  magenta:
+    normal:     "%s"
+    bold:       "%s"
+  cyan:
+    normal:     "%s"
+    bold:       "%s"
+  white:
+    normal:     "%s"
+    bold:       "%s"
+EOM
+
+################
+# Declarations #
+################
+
+declare primary="red"
+declare secondary="blue"
+
+#############
+# Functions #
+#############
+
+usage() {
+    clear
+    more <<-'HELP'
+autowzk - whizkers theme generator
+Usage:
+autowzk [ command [ args... ] ] image file/URL
+If image URL provided, image will be saved at "~/.autowzk".
+Available colors: black, red,  green, yellow,
+                  blue, magenta, cyan, white
+
+Options:
+  -h
+        Show help options
+  -p <color name>
+        Set primary color for template
+  -s <color name>
+        Set secondary color for template
+HELP
+}
+
+err() {
+	printf "\e[31m$1\e[0m" >&2
+}
+
+hl () {
+    printf "\e[32m$1\e[0m" >&2
+}
+
+is_a_color() {
+    [[ " ${COLORS[*]} " =~ *" $1 "* ]]
+    return $?
+}
+
+reload-desktop ()
+{
+    killall compton dunst
+    i3-msg 'restart' &>/dev/null &
+    compton &>/dev/null &
+    dunst &>/dev/null &
+    xrdb ~/.Xresources &>/dev/null &
+    tmux source-file ~/.tmux.conf &>/dev/null &
+    for pts in /dev/pts/*; do
+	(echo -n "$(use-xresources < ~/.Xresources)" > $pts) 2>/dev/null &
+    done &
+}
+
+wzk ()
+{
+    if [ "$#" -eq 0 ]; then
+	whizkers -e >/dev/null
+    else
+	whizkers -e "$@" >/dev/null
+    fi
+
+    [ "$?" -ne 0 ] && exit 1
+
+    reload-desktop
+    [ "$#" -ne 0 ] && sleep 0.5
+
+    exit 0
+}
+
+template ()
+{
+    if [ ! -f "$1" ]; then
+	[[ "$1" != http* ]] && usage
+
+	curl "$1" -o "$SRC" 2>/dev/null || (echo "URL invalid." && exit 1)
+    else
+	cp "$1" "$SRC" 2>/dev/null
+    fi
+
+    # Starting...
+    echo "Using primary = $primary, secondary = $secondary..."
+    echo
+
+    colors="$(colorz2 --no-preview -n 8 "$SRC")"
+    [ "${PIPESTATUS[0]}" -ne 0 ] && exit 1
+
+    yaml="$(echo \
+  "$(readlink -f "$SRC")" "$(basename "$1" | cut -f 1 -d .)" \
+  "$primary" "$secondary" \
+  "$colors" |\
+xargs printf "$TEMPLATE")"
+
+    echo "Generated YAML:"
+    echo "$yaml"
+    echo
+
+    echo "Running wzk..."
+    wzk <(echo "$yaml")
+
+    if [[ ! -z $(which feh) ]];then
+	feh --bg-fill --no-fehbg "$1" 2>/dev/null
+    fi
+
+}
+
+###########
+# Options #
+###########
+
+while getopts ':hp:s:' option; do
+    case $option in
+	h)
+	    usage
+	    exit
+	    ;;
+	p)
+	    primary="$OPTARG"
+	    ;;
+	s)
+	    secondary="$OPTARG"
+	    ;;
+	\?)
+	    err "-$OPTARG is not a valid option"
+    esac
+done
+shift $((OPTIND-1))
+
+########
+# Main #
+########
+
+template "$@"
