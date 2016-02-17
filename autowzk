@@ -96,6 +96,16 @@ is_a_color() {
     return $?
 }
 
+use-xresources ()
+{
+tr -d ' \t' | sed -n '
+s/.*background:/\x1b]11;/p
+s/.*foreground:/\x1b]10;/p
+s/.*borderColor:/\x1b]708;/p
+s/.*color\([0-9][^:]*\):/\x1b]4;\1;/p
+' | tr \\n \\a
+}
+
 reload-desktop ()
 {
     killall compton dunst
@@ -156,7 +166,7 @@ xargs printf "$TEMPLATE")"
     wzk <(echo "$yaml")
 
     if [[ ! -z $(which feh) ]];then
-	feh --bg-fill --no-fehbg "$1" 2>/dev/null
+	feh --bg-fill --no-fehbg "$SRC"
     fi
 
 }
@@ -178,7 +188,9 @@ while getopts ':hp:s:' option; do
 	    secondary="$OPTARG"
 	    ;;
 	\?)
-	    err "-$OPTARG is not a valid option"
+	    err "-$OPTARG is not a valid option\n"
+	    exit
+	    ;;
     esac
 done
 shift $((OPTIND-1))
@@ -187,4 +199,6 @@ shift $((OPTIND-1))
 # Main #
 ########
 
-template "$@"
+if [[ "$#" -ge 1 ]];then
+    template "$@"
+fi

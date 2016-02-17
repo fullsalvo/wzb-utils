@@ -88,10 +88,10 @@ display() {
 	local indent=$2
 	if [[ "$theme" == */* ]]; then
 		# recursive case
-		echo "$indent${theme%%/*}:"
+		printf "\e[34m$indent${theme%%/*}:\e[0m\n"
 		display "${theme#*/}" "$indent$INDENT_STEP"
 	else
-		echo "$indent$theme"
+		printf "$indent$theme"
 	fi
 }
 
@@ -140,7 +140,8 @@ while getopts ':oh' option; do
 	    exit
 	    ;;
 	\?)
-	    err "-$OPTARG is not a valid option"
+	    err "-$OPTARG is not a valid option\n"
+	    exit
 	    ;;
     esac
 done
