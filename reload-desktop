@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# Script Name: reload-desktop
+# Written by fullsalvo
+# Contains the commands to reload after whizkers makes changes
+# Currently only works for i3
+# Potentially has bspwm and openbox support now.
+
+####################
+#
+
+# Define programs to be reloaded
+programs=(
+    compton
+    dunst
+)
+
+#############
+# Functions #
+#############
+
+use-xresources ()
+{
+tr -d ' \t' | sed -n '
+s/.*background:/\x1b]11;/p
+s/.*foreground:/\x1b]10;/p
+s/.*borderColor:/\x1b]708;/p
+s/.*color\([0-9][^:]*\):/\x1b]4;\1;/p
+' | tr \\n \\a
+}
+
+getwm () {
+    if [ -n "$DISPLAY" ]; then
+        id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
+        wm=${wm/*_NET_WM_NAME = }
+        wm=${wm/\"}
+        wm=${wm/\"*}
+    fi
+}
+
+########
+# Main #
+########
+
+# Reload user-specified programs
+for prog in ${programs[@]}; do
+    killall $prog
+    $prog &>/dev/null &
+done &
+
+# Reload X terminal emulator configuration live
+if [[ ! -z ~/.Xresources ]]; then
+    xrdb ~/.Xresources &>/dev/null &
+    for pts in /dev/pts/*; do
+	(echo -n "$(use-xresources < ~/.Xresources)" > $pts) 2>/dev/null &
+    done &
+fi
+
+# Reload window manager
+getwm
+case "$wm" in
+    "bspwm")
+	bspc reload &
+	;;
+    "i3")
+	i3-msg 'restart' &>/dev/null &
+	;;
+    "Openbox")
+	openbox --reconfigure
+	;;
+esac
+
+# Reload tmux colors
+if [[ ! -z ~/.tmux.conf ]]; then
+    tmux source-file ~/.tmux.conf &>/dev/null &
+fi

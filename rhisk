@@ -25,29 +25,6 @@ hl () {
     printf "\e[32m$1\e[0m" >&2
 }
 
-use-xresources ()
-{
-tr -d ' \t' | sed -n '
-s/.*background:/\x1b]11;/p
-s/.*foreground:/\x1b]10;/p
-s/.*borderColor:/\x1b]708;/p
-s/.*color\([0-9][^:]*\):/\x1b]4;\1;/p
-' | tr \\n \\a
-}
-
-reload-desktop ()
-{
-    killall compton dunst
-    i3-msg 'restart' &>/dev/null &
-    compton &>/dev/null &
-    dunst &>/dev/null &
-    xrdb ~/.Xresources &>/dev/null &
-    tmux source-file ~/.tmux.conf &>/dev/null &
-    for pts in /dev/pts/*; do
-	(echo -n "$(use-xresources < ~/.Xresources)" > $pts) 2>/dev/null &
-    done &
-}
-
 wzk ()
 {
     if [ "$#" -eq 0 ]; then
