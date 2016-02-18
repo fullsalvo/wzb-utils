@@ -5,14 +5,18 @@
 # Currently only works for i3
 # Potentially has bspwm and openbox support now.
 
-####################
-#
+################
+# Declarations #
+################
 
 # Define programs to be reloaded
 programs=(
     compton
     dunst
 )
+
+declare tmux_conf=~/.tmux.conf
+declare xres=~/.Xresources
 
 #############
 # Functions #
@@ -38,6 +42,12 @@ getwm () {
     fi
 }
 
+###########
+# Options #
+###########
+
+# Soon to come
+
 ########
 # Main #
 ########
@@ -49,10 +59,10 @@ for prog in ${programs[@]}; do
 done &
 
 # Reload X terminal emulator configuration live
-if [[ ! -z ~/.Xresources ]]; then
-    xrdb ~/.Xresources &>/dev/null &
+if [[ ! -z $xres ]]; then
+    xrdb $xres &>/dev/null &
     for pts in /dev/pts/*; do
-	(echo -n "$(use-xresources < ~/.Xresources)" > $pts) 2>/dev/null &
+	(echo -n "$(use-xresources < $xres)" > $pts) 2>/dev/null &
     done &
 fi
 
@@ -71,6 +81,6 @@ case "$wm" in
 esac
 
 # Reload tmux colors
-if [[ ! -z ~/.tmux.conf ]]; then
-    tmux source-file ~/.tmux.conf &>/dev/null &
+if [[ ! -z $tmux_conf ]]; then
+    tmux source-file $tmux_conf &>/dev/null &
 fi

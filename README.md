@@ -1,5 +1,14 @@
 # Whizkers Utilities
 
+Whizkers on its own is only a file templater. These scripts give you the ability to reload your themes on the fly!
+
+## Overall Dependencies
+
+* bash 4+
+* [whizkers](https://github.com/metakirby5/whizkers)
+
+Other dependencies are on a per-script basis.
+
 ## Rhisk
 
 A script to easily switch between pre-configured whizkers templates.
@@ -51,3 +60,6 @@ Usage:
 	* Allow for template generation
 	* Consolidate dependencies
 	* Sort colors
+
+* Reload-desktop
+	* Expand this to more wms/programs
