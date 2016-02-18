@@ -66,6 +66,12 @@ if [[ ! -z $xres ]]; then
     done &
 fi
 
+# Reload termite, if the user has it
+# (I assume that if you have termite, you use it)
+if [[ ! -z $(which termite) ]]; then
+    killall -s USR1 termite &
+fi
+
 # Reload window manager
 getwm
 case "$wm" in

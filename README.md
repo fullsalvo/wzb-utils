@@ -2,6 +2,8 @@
 
 Whizkers on its own is only a file templater. These scripts give you the ability to reload your themes on the fly!
 
+Just clone the repo and add it to your $PATH!
+
 ## Overall Dependencies
 
 * bash 4+
@@ -59,15 +61,15 @@ There is an array `programs` in the script, intended to declare the programs tha
 ## TODO
 
 * All
-	* Increase Portability
+	- [ ] Increase Portability
 
 * Rhisk
-    * Expand functionality
+    - [ ] Expand functionality
 
 * Autowzk
-	* Allow for template generation
-	* Consolidate dependencies
-	* Sort colors
+	- [ ] Allow for template generation
+	- [ ] Consolidate dependencies
+	- [ ] Sort colors
 
 * Reload-desktop
-	* Expand this to more wms/programs
+	- [ ] Expand this to more wms/programs
