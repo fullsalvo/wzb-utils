@@ -48,6 +48,14 @@ Usage:
       -s <color name>
             Set secondary color for template
 
+## Reload-desktop
+
+A script to reload configuration files in place.
+
+### Set the programs that reload
+
+There is an array `programs` in the script, intended to declare the programs that need to be killed and reopened. Other configs are loaded if the appropriate files are detected.
+
 ## TODO
 
 * All
