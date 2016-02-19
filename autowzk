@@ -4,7 +4,7 @@
 # Heavily modified by fullsalvo
 # Runs colorz2 on an image file to get 8 colors, then stuffs those colors
 # through wzk.
-# Dependency: colorz2 - https;//github.com/metakirby5/colorz2
+# Dependency: colorz2 - https://github.com/metakirby5/colorz2
 
 SRC=~/.autowzk
 
@@ -52,12 +52,42 @@ colors:
     bold:       "%s"
 EOM
 
+read -r -d '' NOBW <<-'NOBW'
+wallpapers: "%s"
+
+name:           "%s"
+colors:
+  primary:      "%s"
+  secondary:    "%s"
+  red:
+    normal:     "%s"
+    bold:       "%s"
+  green:
+    normal:     "%s"
+    bold:       "%s"
+  yellow:
+    normal:     "%s"
+    bold:       "%s"
+  blue:
+    normal:     "%s"
+    bold:       "%s"
+  magenta:
+    normal:     "%s"
+    bold:       "%s"
+  cyan:
+    normal:     "%s"
+    bold:       "%s"
+NOBW
+
+
 ################
 # Declarations #
 ################
 
 declare primary="red"
 declare secondary="blue"
+declare temp=$NOBW
+declare col=6
 
 #############
 # Functions #
@@ -125,14 +155,14 @@ template ()
     echo "Using primary = $primary, secondary = $secondary..."
     echo
 
-    colors="$(colorz2 --no-preview -n 8 "$SRC")"
+    colors="$(colorz2 --no-preview -n $col "$SRC")"
     [ "${PIPESTATUS[0]}" -ne 0 ] && exit 1
 
     yaml="$(echo \
   "$(readlink -f "$SRC")" "$(basename "$1" | cut -f 1 -d .)" \
   "$primary" "$secondary" \
   "$colors" |\
-xargs printf "$TEMPLATE")"
+xargs printf "$temp")"
 
     echo "Generated YAML:"
     echo "$yaml"
@@ -142,7 +172,7 @@ xargs printf "$TEMPLATE")"
     wzk <(echo "$yaml")
 
     if [[ ! -z $(which feh) ]];then
-	feh --bg-fill --no-fehbg $SRC
+	feh --bg-fill --no-fehbg "$SRC"
     fi
     exit
 }
@@ -151,7 +181,7 @@ xargs printf "$TEMPLATE")"
 # Options #
 ###########
 
-while getopts ':hp:s:' option; do
+while getopts ':hp:s:c' option; do
     case $option in
 	h)
 	    usage
@@ -162,6 +192,10 @@ while getopts ':hp:s:' option; do
 	    ;;
 	s)
 	    secondary="$OPTARG"
+	    ;;
+	c)
+	    temp=$TEMPLATE
+	    col=8
 	    ;;
 	\?)
 	    err "-$OPTARG is not a valid option\n"
