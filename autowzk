@@ -4,7 +4,7 @@
 # Heavily modified by fullsalvo
 # Runs colorz2 on an image file to get 8 colors, then stuffs those colors
 # through wzk.
-# Dependency: color2 - https;//github.com/metakirby5/colorz2
+# Dependency: colorz2 - https;//github.com/metakirby5/colorz2
 
 SRC=~/.autowzk
 
@@ -109,7 +109,6 @@ wzk ()
     reload-desktop
     [ "$#" -ne 0 ] && sleep 0.5
 
-    exit 0
 }
 
 template ()
@@ -143,9 +142,9 @@ xargs printf "$TEMPLATE")"
     wzk <(echo "$yaml")
 
     if [[ ! -z $(which feh) ]];then
-	feh --bg-fill --no-fehbg "$SRC"
+	feh --bg-fill --no-fehbg $SRC
     fi
-
+    exit
 }
 
 ###########
@@ -176,6 +175,6 @@ shift $((OPTIND-1))
 # Main #
 ########
 
-if [[ "$#" -ge 1 ]];then
+if [[ "$#" -ge 1 ]]; then
     template "$@"
 fi

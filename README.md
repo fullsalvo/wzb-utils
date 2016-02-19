@@ -52,7 +52,7 @@ Usage:
 
 ## Reload-desktop
 
-A script to reload configuration files in place.
+A script to reload configuration files in place. Currently only used via calls in the other two scripts.
 
 ### Set the programs that reload
 
