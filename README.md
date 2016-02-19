@@ -49,10 +49,13 @@ Usage:
             Set primary color for template
       -s <color name>
             Set secondary color for template
+      -c
+	        Include black and white in the templating
+			  (default: no black and white)
 
 ## Reload-desktop
 
-A script to reload configuration files in place. Currently only used via calls in the other two scripts.
+A script to reload program/wm configurations in place. Currently only used via calls in the other two scripts.
 
 ### Set the programs that reload
 
