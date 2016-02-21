@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Script Name: reload-desktop
 # Written by fullsalvo
-# Contains the commands to reload after whizkers makes changes
+# Contains the commands to restart porgrams after whizkers makes changes
 # Currently only works for i3
 # Potentially has bspwm and openbox support now.
 
@@ -9,7 +9,7 @@
 # Declarations #
 ################
 
-# Define programs to be reloaded
+# Define programs to be restarted
 programs=(
     compton
     dunst
