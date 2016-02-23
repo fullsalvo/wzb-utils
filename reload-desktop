@@ -24,7 +24,7 @@ declare xres=~/.Xresources
 
 use-xresources ()
 {
-tr -d ' \t' | sed -n '
+    tr -d ' \t' | sed -n '
 s/.*background:/\x1b]11;/p
 s/.*foreground:/\x1b]10;/p
 s/.*borderColor:/\x1b]708;/p
@@ -52,7 +52,7 @@ getwm () {
 # Main #
 ########
 
-# Reload user-specified programs
+# User-specified programs
 for prog in ${programs[@]}; do
     killall $prog
     $prog &>/dev/null &
@@ -82,7 +82,7 @@ case "$wm" in
 	i3-msg 'restart' &>/dev/null &
 	;;
     "Openbox")
-	openbox --reconfigure
+	openbox --reconfigure &
 	;;
 esac
 

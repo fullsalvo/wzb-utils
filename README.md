@@ -76,3 +76,15 @@ There is an array `programs` in the script, intended to declare the programs tha
 
 * Reload-desktop
 	- [ ] Expand this to more wms/programs
+		- [ ] Terminals
+			- [x] URxvt/Rxvt/XTerm
+			- [x] Termite
+			- [ ] Terminator/Gnome-Terminal
+			- [ ] st
+		- [ ] Window Managers
+			- [x] i3
+			- [x] bspwm
+			- [x] Openbox
+			- [ ] Awesome
+			- [ ] herbstluftwm
+			- [ ] The many other popular wms not listed
