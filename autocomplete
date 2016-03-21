@@ -1,0 +1,13 @@
+_rhisk_comp()
+{
+    _rhisk_commands=$(rhisk -c)
+
+    local cur prev
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=( $(compgen -W "${_rhisk_commands}" -- ${cur}) )
+
+    return 0
+}
+
+complete -o nospace -F _rhisk_comp rhisk

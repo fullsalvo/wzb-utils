@@ -32,7 +32,8 @@ s/.*color\([0-9][^:]*\):/\x1b]4;\1;/p
 ' | tr \\n \\a
 }
 
-getwm () {
+getwm ()
+{
     if [ -n "$DISPLAY" ]; then
         id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"

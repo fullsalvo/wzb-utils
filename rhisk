@@ -12,6 +12,7 @@
 ################
 
 declare INDENT_STEP="   "
+declare choices=( )
 
 #############
 # Functions #
@@ -99,14 +100,24 @@ Help Options:
   -h                      Show help options
 Theme Options:
   -o                      Show theme options
+  -c                      Show all options uncategorized
 HELP
 }
+
+compl_opts ()
+{
+    for t in `whizkers -l`; do
+	choices+=("${t##*/}\n")
+    done
+    printf "${choices[*]}"
+}
+
 
 ###########
 # Options #
 ###########
 
-while getopts ':oh' option; do
+while getopts ':ohc' option; do
     case $option in
 	o)
 	    options
@@ -114,6 +125,10 @@ while getopts ':oh' option; do
 	    ;;
         h)
 	    usage
+	    exit
+	    ;;
+	c)
+	    compl_opts
 	    exit
 	    ;;
 	\?)

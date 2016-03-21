@@ -25,6 +25,11 @@ Usage:
       -h                      Show help options
     Theme Options:
       -o                      Show theme options
+      -c                      Show all options uncategorized
+
+### Autocomplete
+
+The file `autocomplete` adds tab completion of the options for `rhisk`. To use it, you must source the file in your .bashrc.
 
 ## Autowzk
 
