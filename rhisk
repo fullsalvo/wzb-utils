@@ -52,7 +52,8 @@ theme ()
 	if [[ -n $opt ]]; then
 	    out+=("$opt")
 	else
-	    err "Template \'${i}\' doesn't exist. Please choose a valid template.\n"
+	    err "Template \'${i}\' doesn't exist. Please choose a valid \
+template.\n"
 	    exit 1
 	fi
     done
@@ -81,7 +82,8 @@ options ()
 		err "You have no themes to display."
 	fi
 	for t in $(whizkers -l); do
-		result="$result $(display "$t" "")"
+		result="$result
+$(display "$t" "")"
 	done
 	hl "Template Options:"
 	printf "$result" | awk '!a[$0]++'
@@ -106,7 +108,7 @@ usage ()
 compl_opts ()
 {
 	for t in $(whizkers -l); do
-		choices+=("${t##*/}\n")
+	    choices+=("${t##*/}")
 	done
 	printf "${choices[*]}"
 }
