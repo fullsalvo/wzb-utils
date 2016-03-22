@@ -48,7 +48,7 @@ theme ()
 
     local tem=$(whizkers -l)
     for i in "$@"; do
-	opt=$(printf "${tem}" | grep -F "${i}$")
+	opt=$(printf "${tem}" | grep "${i}$")
 	if [[ -n $opt ]]; then
 	    out+=("$opt")
 	else
