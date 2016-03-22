@@ -37,9 +37,9 @@ getwm ()
     if [ -n "$DISPLAY" ]; then
         id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
-        wm=${wm/*_NET_WM_NAME = }
-        wm=${wm/\"}
-        wm=${wm/\"*}
+        wm="${wm/*_NET_WM_NAME = }"
+        wm="${wm/\"}"
+        wm="${wm/\"*}"
     fi
 }
 
@@ -54,40 +54,40 @@ getwm ()
 ########
 
 # User-specified programs
-for prog in ${programs[@]}; do
-    killall $prog
+for prog in "${programs[@]}"; do
+    killall "${prog%% *}"
     $prog &>/dev/null &
 done &
 
 # Reload X terminal emulator configuration live
-if [[ ! -z $xres ]]; then
-    xrdb $xres &>/dev/null &
+if [[ -n $xres ]]; then
+    xrdb "$xres" &>/dev/null &
     for pts in /dev/pts/*; do
-	(echo -n "$(use-xresources < $xres)" > $pts) 2>/dev/null &
+	(echo -n "$(use-xresources < "$xres")" > "$pts") 2>/dev/null &
     done &
 fi
 
 # Reload termite, if the user has it
 # (I assume that if you have termite, you use it)
-if [[ ! -z $(which termite) ]]; then
+if [[ -n $(which termite) ]]; then
     killall -s USR1 termite &
 fi
 
 # Reload window manager
 getwm
 case "$wm" in
-    "bspwm")
+    bspwm)
 	bspc reload &
 	;;
-    "i3")
+    i3)
 	i3-msg 'restart' &>/dev/null &
 	;;
-    "Openbox")
+    Openbox)
 	openbox --reconfigure &
 	;;
 esac
 
 # Reload tmux colors
-if [[ ! -z $tmux_conf ]]; then
-    tmux source-file $tmux_conf &>/dev/null &
+if [[ -n "$tmux_conf" ]]; then
+    tmux source-file "$tmux_conf" &>/dev/null &
 fi
