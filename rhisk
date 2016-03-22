@@ -28,36 +28,36 @@ hl () {
 
 wzk ()
 {
-    if [ "$#" -eq 0 ]; then
+    if (( $# == 0 )); then
 	whizkers -e >/dev/null
     else
 	whizkers -e "$@" >/dev/null
     fi
 
-    [ "$?" -ne 0 ] && exit 1
+    [[ "$?" -ne 0 ]] && exit 1
 
     reload-desktop
-    [ "$#" -ne 0 ] && sleep 0.5
+    [[ "$#" != 0 ]] && sleep 0.5
 
     exit 0
 }
 
 theme ()
 {
-    out=""
+    local out=()
 
-    tem=$(whizkers -l)
+    local tem=$(whizkers -l)
     for i in "$@"; do
-	opt=$(printf "${tem}" | grep "${i}$")
-	if [[ ! -z $opt ]]; then
-	    out+="${opt} "
+	opt=$(printf "${tem}" | grep -F "${i}$")
+	if [[ -n $opt ]]; then
+	    out+=("$opt")
 	else
 	    err "Template \'${i}\' doesn't exist. Please choose a valid template.\n"
 	    exit 1
 	fi
     done
 
-    wzk $out
+    wzk "${out[@]}"
     exit 0
 }
 
