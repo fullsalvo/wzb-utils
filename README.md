@@ -68,9 +68,6 @@ There is an array `programs` in the script, intended to declare the programs tha
 
 ## TODO
 
-* All
-	- [ ] Increase Portability
-
 * Rhisk
     - [ ] Expand functionality
 
@@ -80,16 +77,16 @@ There is an array `programs` in the script, intended to declare the programs tha
 	- [ ] Sort colors
 
 * Reload-desktop
-	- [ ] Add font change controls
+	- [x] Add font change controls
 	- [ ] Expand this to more wms/programs
 		- [ ] Terminals
 			- [x] URxvt/Rxvt/XTerm
 			- [x] Termite
 			- [ ] Terminator/Gnome-Terminal
-			- [ ] st
+			- [ ] st + [shit](https://github.com/neeasade/shit)
 		- [ ] Window Managers
 			- [x] i3
-			- [x] bspwm
+			- [ ] bspwm
 			- [x] Openbox
 			- [ ] Awesome
 			- [ ] herbstluftwm
