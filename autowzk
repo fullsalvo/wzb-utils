@@ -9,14 +9,14 @@
 SRC=~/.autowzk
 
 COLORS=(
-    black
-    red
-    green
-    yellow
-    blue
-    magenta
-    cyan
-    white
+	black
+	red
+	green
+	yellow
+	blue
+	magenta
+	cyan
+	white
 )
 
 read -r -d '' TEMPLATE << EOM
@@ -121,63 +121,63 @@ err() {
 }
 
 hl () {
-    printf "\e[32m$1\e[0m" >&2
+	printf "\e[32m$1\e[0m" >&2
 }
 
 is_a_color() {
-    [[ " ${COLORS[*]} " =~ *" $1 "* ]]
-    return $?
+	[[ " ${COLORS[*]} " =~ *" $1 "* ]]
+	return $?
 }
 
 wzk ()
 {
-    if [ "$#" -eq 0 ]; then
+	if [ "$#" -eq 0 ]; then
 	whizkers -e >/dev/null
-    else
+	else
 	whizkers -e "$@" >/dev/null
-    fi
+	fi
 
-    [ "$?" -ne 0 ] && exit 1
+	[ "$?" -ne 0 ] && exit 1
 
-    reload-desktop
-    [ "$#" -ne 0 ] && sleep 0.5
+	reload-desktop
+	[ "$#" -ne 0 ] && sleep 0.5
 
 }
 
 template ()
 {
-    if [ ! -f "$1" ]; then
+	if [ ! -f "$1" ]; then
 	[[ "$1" != http* ]] && usage
 
 	curl "$1" -o "$SRC" 2>/dev/null || (echo "URL invalid." && exit 1)
-    else
+	else
 	cp "$1" "$SRC" 2>/dev/null
-    fi
+	fi
 
-    # Starting...
-    echo "Using primary = $primary, secondary = $secondary..."
-    echo
+	# Starting...
+	echo "Using primary = $primary, secondary = $secondary..."
+	echo
 
-    colors="$(colorz2 --no-preview -n $col "$SRC")"
-    [ "${PIPESTATUS[0]}" -ne 0 ] && exit 1
+	colors="$(colorz2 --no-preview -n $col "$SRC")"
+	[ "${PIPESTATUS[0]}" -ne 0 ] && exit 1
 
-    yaml="$(echo \
+	yaml="$(echo \
   "$(readlink -f "$SRC")" "$(basename "$1" | cut -f 1 -d .)" \
   "$primary" "$secondary" \
   "$colors" |\
 xargs printf "$temp")"
 
-    echo "Generated YAML:"
-    echo "$yaml"
-    echo
+	echo "Generated YAML:"
+	echo "$yaml"
+	echo
 
-    echo "Running wzk..."
-    wzk <(echo "$yaml")
+	echo "Running wzk..."
+	wzk <(echo "$yaml")
 
-    if [[ ! -z $(which feh) ]];then
+	if [[ ! -z $(which feh) ]];then
 	feh --bg-fill --no-fehbg "$SRC"
-    fi
-    exit
+	fi
+	exit
 }
 
 ###########
@@ -185,26 +185,26 @@ xargs printf "$temp")"
 ###########
 
 while getopts ':hp:s:c' option; do
-    case $option in
+	case $option in
 	h)
-	    usage
-	    exit
-	    ;;
+		usage
+		exit
+		;;
 	p)
-	    primary="$OPTARG"
-	    ;;
+		primary="$OPTARG"
+		;;
 	s)
-	    secondary="$OPTARG"
-	    ;;
+		secondary="$OPTARG"
+		;;
 	c)
-	    temp=$TEMPLATE
-	    col=8
-	    ;;
+		temp=$TEMPLATE
+		col=8
+		;;
 	\?)
-	    err "-$OPTARG is not a valid option\n"
-	    exit
-	    ;;
-    esac
+		err "-$OPTARG is not a valid option\n"
+		exit
+		;;
+	esac
 done
 shift $((OPTIND-1))
 
@@ -213,5 +213,5 @@ shift $((OPTIND-1))
 ########
 
 if [[ "$#" -ge 1 ]]; then
-    template "$@"
+	template "$@"
 fi

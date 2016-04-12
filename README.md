@@ -80,6 +80,7 @@ There is an array `programs` in the script, intended to declare the programs tha
 	- [ ] Sort colors
 
 * Reload-desktop
+	- [ ] Add font change controls
 	- [ ] Expand this to more wms/programs
 		- [ ] Terminals
 			- [x] URxvt/Rxvt/XTerm

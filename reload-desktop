@@ -5,10 +5,7 @@
 # Currently only works for i3
 # Potentially has bspwm and openbox support now.
 
-################
-# Declarations #
-################
-
+# Declarations {{{
 # Define programs to be restarted
 programs=(
     compton
@@ -17,14 +14,13 @@ programs=(
 
 declare tmux_conf=~/.tmux.conf
 declare xres=~/.Xresources
-
-#############
-# Functions #
-#############
+# }}}
+# Functions {{{
 
 use-xresources ()
 {
     tr -d ' \t' | sed -n '
+s/URxvt.font:/\x1b]50;/p
 s/.*background:/\x1b]11;/p
 s/.*foreground:/\x1b]10;/p
 s/.*borderColor:/\x1b]708;/p
@@ -35,30 +31,24 @@ s/.*color\([0-9][^:]*\):/\x1b]4;\1;/p
 getwm ()
 {
     if [ -n "$DISPLAY" ]; then
-        id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
-        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
-        wm="${wm/*_NET_WM_NAME = }"
-        wm="${wm/\"}"
-        wm="${wm/\"*}"
+	id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+	wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
+	wm="${wm/*_NET_WM_NAME = }"
+	wm="${wm/\"}"
+	wm="${wm/\"*}"
     fi
 }
 
-###########
-# Options #
-###########
-
-# Soon to come
-
-########
-# Main #
-########
-
+# }}}
+# Main {{{
+# Programs {{{
 # User-specified programs
 for prog in "${programs[@]}"; do
     killall "${prog%% *}"
     $prog &>/dev/null &
 done &
-
+# }}}
+# Terminals {{{
 # Reload X terminal emulator configuration live
 if [[ -n $xres ]]; then
     xrdb "$xres" &>/dev/null &
@@ -72,22 +62,23 @@ fi
 if [[ -n $(which termite) ]]; then
     killall -s USR1 termite &
 fi
-
+# }}}
+# Window Manager {{{
 # Reload window manager
 getwm
 case "$wm" in
-    bspwm)
-	bspc reload &
-	;;
     i3)
 	i3-msg 'restart' &>/dev/null &
 	;;
     Openbox)
-	openbox --reconfigure &
+	openbox --reconfigure &>/dev/null &
 	;;
 esac
-
+# }}}
+# tmux {{{
 # Reload tmux colors
 if [[ -n "$tmux_conf" ]]; then
     tmux source-file "$tmux_conf" &>/dev/null &
 fi
+# }}}
+# }}}
