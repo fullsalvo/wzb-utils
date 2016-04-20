@@ -5,17 +5,20 @@
 # Currently only works for i3
 # Potentially has bspwm and openbox support now.
 
-# Declarations {{{
+# Declarations
 # Define programs to be restarted
 programs=(
     compton
     dunst
 )
+keypresses=(
+	emacs24
+)
 
 declare tmux_conf=~/.tmux.conf
 declare xres=~/.Xresources
-# }}}
-# Functions {{{
+
+# Functions
 
 use-xresources ()
 {
@@ -39,16 +42,21 @@ getwm ()
     fi
 }
 
-# }}}
-# Main {{{
-# Programs {{{
+for prog in "${keypresses[@]}"; do
+	for window in `xdotool search --class $prog`; do
+ 		xdotool key --window $window F13 &>/dev/null &
+	done
+done
+
+# Main
+# Programs
 # User-specified programs
 for prog in "${programs[@]}"; do
     killall "${prog%% *}"
     $prog &>/dev/null &
 done &
-# }}}
-# Terminals {{{
+
+
 # Reload X terminal emulator configuration live
 if [[ -n $xres ]]; then
     xrdb "$xres" &>/dev/null &
@@ -62,7 +70,7 @@ fi
 if [[ -n $(which termite) ]]; then
     killall -s USR1 termite &
 fi
-# }}}
+
 # Window Manager {{{
 # Reload window manager
 getwm
@@ -74,11 +82,9 @@ case "$wm" in
 	openbox --reconfigure &>/dev/null &
 	;;
 esac
-# }}}
-# tmux {{{
+
+# tmux
 # Reload tmux colors
 if [[ -n "$tmux_conf" ]]; then
     tmux source-file "$tmux_conf" &>/dev/null &
 fi
-# }}}
-# }}}

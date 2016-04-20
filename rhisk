@@ -32,9 +32,9 @@ wzk ()
 
 	[[ "$?" != 0 ]] && exit 1
 
-	reload-desktop
-	[[ "$#" != 0 ]] && sleep 0.5
+	[[ "$#" != 0 ]] && sleep 1
 
+	reload-desktop
 	exit 0
 }
 
