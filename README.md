@@ -91,3 +91,7 @@ There is an array `programs` in the script, intended to declare the programs tha
 			- [ ] Awesome
 			- [ ] herbstluftwm
 			- [ ] The many other popular wms not listed
+
+## Thanks to
+
+[metakirby5](https://github.com/metakirby5) for making any of this possible and creating whizkers.

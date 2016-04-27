@@ -56,7 +56,6 @@ for prog in "${programs[@]}"; do
     $prog &>/dev/null &
 done &
 
-
 # Reload X terminal emulator configuration live
 if [[ -n $xres ]]; then
     xrdb "$xres" &>/dev/null &
