@@ -11,8 +11,13 @@ programs=(
     compton
     dunst
 )
-keypresses=(
+
+keyprog=(
 	emacs24
+)
+
+key=(
+	F13
 )
 
 declare tmux_conf=~/.tmux.conf
@@ -42,10 +47,12 @@ getwm ()
     fi
 }
 
-for prog in "${keypresses[@]}"; do
+n=0
+for prog in "${keyprog[@]}"; do
 	for window in `xdotool search --class $prog`; do
- 		xdotool key --window $window F13 &>/dev/null &
+ 		xdotool key --window $window ${key[n]} &>/dev/null &
 	done
+	n=n+1
 done
 
 # Main
@@ -60,7 +67,7 @@ done &
 if [[ -n $xres ]]; then
     xrdb "$xres" &>/dev/null &
     for pts in /dev/pts/*; do
-	(echo -n "$(use-xresources < "$xres")" > "$pts") 2>/dev/null &
+		(echo -n "$(use-xresources < "$xres")" > "$pts") 2>/dev/null &
     done &
 fi
 
