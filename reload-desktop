@@ -20,12 +20,23 @@ key=(
 	F13
 )
 
+declare usefont=0
 declare tmux_conf=~/.tmux.conf
 declare xres=~/.Xresources
 
 # Functions
 
 use-xresources ()
+{
+	tr -d ' \t' | sed -n '
+s/.*background:/\x1b]11;/p
+s/.*foreground:/\x1b]10;/p
+s/.*borderColor:/\x1b]708;/p
+s/.*color\([0-9][^:]*\):/\x1b]4;\1;/p
+' | tr \\n \\a
+}
+
+use-xresourcesfont ()
 {
     tr -d ' \t' | sed -n '
 s/URxvt.font:/\x1b]50;/p
@@ -66,15 +77,26 @@ done &
 # Reload X terminal emulator configuration live
 if [[ -n $xres ]]; then
     xrdb "$xres" &>/dev/null &
-    for pts in /dev/pts/*; do
-		(echo -n "$(use-xresources < "$xres")" > "$pts") 2>/dev/null &
-    done &
+	if [ $usefont -eq 0 ]; then
+		for pts in /dev/pts/*; do
+			(echo -n "$(use-xresources < "$xres")" > "$pts") 2>/dev/null &
+		done &
+	else
+		for pts in /dev/pts/*; do
+			(echo -n "$(use-xresourcesfont < "$xres")" > "$pts") 2>/dev/null &
+		done &
+	fi
 fi
 
 # Reload termite, if the user has it
 # (I assume that if you have termite, you use it)
 if [[ -n $(which termite) ]]; then
     killall -s USR1 termite &
+fi
+
+# Reload cava
+if [[ -n $(which cava) ]]; then
+	killall -s USR1 cava &
 fi
 
 # Window Manager {{{

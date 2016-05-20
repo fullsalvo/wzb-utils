@@ -41,19 +41,16 @@ wzk ()
 theme ()
 {
 	local out=()
-
 	local tem=$(whizkers -l)
 	for i in "$@"; do
-	opt=$(printf "${tem}" | grep "${i}$")
-	if [[ -n $opt ]]; then
-		out+=("$opt")
-	else
-		err "Template \'${i}\' doesn't exist. Please choose a valid \
-template.\n"
-		exit 1
-	fi
+		opt=$(printf "${tem}" | grep "${i}$")
+		if [[ -n $opt ]]; then
+			out+=("$opt")
+		else
+			err "Template \'${i}\' doesn't exist. Please choose a valid template.\n"
+			exit 1
+		fi
 	done
-
 	wzk "${out[@]}"
 	exit 0
 }
