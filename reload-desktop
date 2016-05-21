@@ -91,12 +91,12 @@ fi
 # Reload termite, if the user has it
 # (I assume that if you have termite, you use it)
 if [[ -n $(which termite) ]]; then
-    killall -s USR1 termite &
+    killall -s USR1 termite &>/dev/null &
 fi
 
 # Reload cava
 if [[ -n $(which cava) ]]; then
-	killall -s USR1 cava &
+	killall -s USR1 cava &>/dev/null &
 fi
 
 # Window Manager {{{

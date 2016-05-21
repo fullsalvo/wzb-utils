@@ -29,7 +29,13 @@ Usage:
 
 ### Autocomplete
 
+#### Bash
+
 The file `autocomplete` adds tab completion of the options for `rhisk`. To use it, you must source the file in your .bashrc.
+
+#### Zsh
+
+Similarly to Bash, you must source the file `autocomplete` in your .zshrc. However, before that, you must add the commands `autoload -U +X bashcompinit && bashcompinit` in order to use bash-style autocompletion in your shell.
 
 ## Autowzk
 
@@ -68,9 +74,6 @@ There is an array `programs` in the script, intended to declare the programs tha
 
 ## TODO
 
-* Rhisk
-    - [ ] Expand functionality
-
 * Autowzk
 	- [ ] Allow for template generation
 	- [ ] Consolidate dependencies
@@ -78,6 +81,7 @@ There is an array `programs` in the script, intended to declare the programs tha
 
 * Reload-desktop
 	- [x] Add font change controls
+	    - [x] Make font change optional (Currently change function script variable)
 	- [ ] Expand this to more wms/programs
 		- [ ] Terminals
 			- [x] URxvt/Rxvt/XTerm

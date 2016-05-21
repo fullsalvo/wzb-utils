@@ -1,3 +1,6 @@
+# For zsh:
+# autoload -U +X bashcompinit && bashcompinit
+
 _rhisk_comp()
 {
     _rhisk_commands=$(rhisk -c)
