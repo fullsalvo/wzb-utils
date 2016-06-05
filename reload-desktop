@@ -58,61 +58,69 @@ getwm ()
     fi
 }
 
-n=0
-for prog in "${keyprog[@]}"; do
-	for window in `xdotool search --class $prog`; do
- 		xdotool key --window $window ${key[n]} &>/dev/null &
-	done
-	n=n+1
-done
-
 # Main
-# Programs
-# User-specified programs
-for prog in "${programs[@]}"; do
-    killall "${prog%% *}"
-    $prog &>/dev/null &
-done &
 
-# Reload X terminal emulator configuration live
-if [[ -n $xres ]]; then
-    xrdb "$xres" &>/dev/null &
-	if [ $usefont -eq 0 ]; then
-		for pts in /dev/pts/*; do
-			(echo -n "$(use-xresources < "$xres")" > "$pts") 2>/dev/null &
-		done &
-	else
-		for pts in /dev/pts/*; do
-			(echo -n "$(use-xresourcesfont < "$xres")" > "$pts") 2>/dev/null &
-		done &
+main ()
+{
+	# Programs that require a keypress to reload configs
+
+	n=0
+	for prog in "${keyprog[@]}"; do
+		for window in `xdotool search --class $prog`; do
+ 			xdotool key --window $window ${key[n]} &>/dev/null &
+		done
+		n=n+1
+	done
+
+	# Programs
+	# User-specified programs
+	for prog in "${programs[@]}"; do
+		killall "${prog%% *}"
+		$prog &>/dev/null &
+	done &
+
+	# Reload X terminal emulator configuration live
+	if [[ -n $xres ]]; then
+		xrdb "$xres" &>/dev/null &
+		if [ $usefont -eq 0 ]; then
+			for pts in /dev/pts/*; do
+				(echo -n "$(use-xresources < "$xres")" > "$pts") 2>/dev/null &
+			done &
+		else
+			for pts in /dev/pts/*; do
+				(echo -n "$(use-xresourcesfont < "$xres")" > "$pts") 2>/dev/null &
+			done &
+		fi
 	fi
-fi
 
-# Reload termite, if the user has it
-# (I assume that if you have termite, you use it)
-if [[ -n $(which termite) ]]; then
-    killall -s USR1 termite &>/dev/null &
-fi
+	# Reload termite, if the user has it
+	# (I assume that if you have termite, you use it)
+	if [[ -n $(which termite) ]]; then
+		killall -s USR1 termite &>/dev/null &
+	fi
 
-# Reload cava
-if [[ -n $(which cava) ]]; then
-	killall -s USR1 cava &>/dev/null &
-fi
+	# Reload cava
+	if [[ -n $(which cava) ]]; then
+		killall -s USR1 cava &>/dev/null &
+	fi
 
-# Window Manager {{{
-# Reload window manager
-getwm
-case "$wm" in
-    i3)
-	i3-msg 'restart' &>/dev/null &
-	;;
-    Openbox)
-	openbox --reconfigure &>/dev/null &
-	;;
-esac
+	# Window Manager {{{
+	# Reload window manager
+	getwm
+	case "$wm" in
+		i3)
+			i3-msg 'restart' &>/dev/null &
+			;;
+		Openbox)
+			openbox --reconfigure &>/dev/null &
+			;;
+	esac
 
-# tmux
-# Reload tmux colors
-if [[ -n "$tmux_conf" ]]; then
-    tmux source-file "$tmux_conf" &>/dev/null &
-fi
+	# tmux
+	# Reload tmux colors
+	if [[ -n "$tmux_conf" ]]; then
+		tmux source-file "$tmux_conf" &>/dev/null &
+	fi
+}
+
+main >/dev/null
