@@ -95,12 +95,12 @@ main ()
 
 	# Reload termite, if the user has it
 	# (I assume that if you have termite, you use it)
-	if [[ -n $(which termite) ]]; then
+	if [[ -n $(pgrep termite) ]]; then
 		killall -s USR1 termite &>/dev/null &
 	fi
 
 	# Reload cava
-	if [[ -n $(which cava) ]]; then
+	if [[ -n $(pgrep cava) ]]; then
 		killall -s USR1 cava &>/dev/null &
 	fi
 
@@ -116,6 +116,12 @@ main ()
 			;;
 	esac
 
+	# Bars
+	# Tint2
+	if [[ -n $(pgrep tint2) ]]; then
+		killall -s USR1 tint2 &>/dev/null &
+	fi
+
 	# tmux
 	# Reload tmux colors
 	if [[ -n "$tmux_conf" ]]; then
@@ -123,4 +129,4 @@ main ()
 	fi
 }
 
-main >/dev/null
+main
