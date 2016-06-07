@@ -8,16 +8,15 @@
 # Declarations
 # Define programs to be restarted
 programs=(
-    compton
-    dunst
 )
 
 keyprog=(
-	emacs24
 )
 
 key=(
-	F13
+)
+
+commands=(
 )
 
 declare usefont=0
