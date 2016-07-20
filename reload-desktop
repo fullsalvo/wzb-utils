@@ -1,23 +1,9 @@
 #!/usr/bin/env bash
 # Script Name: reload-desktop
 # Written by fullsalvo
-# Contains the commands to restart porgrams after whizkers makes changes
-# Currently only works for i3
-# Potentially has bspwm and openbox support now.
+# Contains the commands to restart programs after whizkers makes changes
 
-# Declarations
-# Define programs to be restarted
-programs=(
-)
-
-keyprog=(
-)
-
-key=(
-)
-
-commands=(
-)
+reload_config=~/.rhisk
 
 declare usefont=0
 declare tmux_conf=~/.tmux.conf
@@ -61,22 +47,29 @@ getwm ()
 
 main ()
 {
-	# Programs that require a keypress to reload configs
+	# Read config file
+	[ -f "$reload_config" ] && source "$reload_config"
 
+	# Programs that require a keypress to reload configs
 	n=0
-	for prog in "${keyprog[@]}"; do
+	for prog in "${reload_key_programs[@]}"; do
 		for window in `xdotool search --class $prog`; do
- 			xdotool key --window $window ${key[n]} &>/dev/null &
+ 			xdotool key --window $window ${reload_keypresses[n]} &>/dev/null &
 		done
 		n=n+1
 	done
 
 	# Programs
 	# User-specified programs
-	for prog in "${programs[@]}"; do
+	for prog in "${reload_programs[@]}"; do
 		killall "${prog%% *}"
 		$prog &>/dev/null &
 	done &
+
+	# Commands
+	for com in "${reload_commands[@]}"; do
+		$com &>/dev/null &
+	done
 
 	# Reload X terminal emulator configuration live
 	if [[ -n $xres ]]; then
@@ -115,7 +108,6 @@ main ()
 			;;
 	esac
 
-	# Bars
 	# Tint2
 	if [[ -n $(pgrep tint2) ]]; then
 		killall -s USR1 tint2 &>/dev/null &

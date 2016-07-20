@@ -1,8 +1,0 @@
-#compdef rhisk
-## completion for rhisk
-
-typeset -a arguments
-
-arguments+=( `rhisk -c` )
-
-_arguments -s ${arguments}
