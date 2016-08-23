@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # Script name: fzr
-# Written by fulllsalvo
+# Written by fullsalvo
 # Depends on https://github.com/junegunn/fzf
 # Lists usable rhisk themes and allows selection via \t (tab)
+
+# Function
 
 fzr () {
 	local themes
