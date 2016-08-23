@@ -11,6 +11,34 @@ Just clone the repo and add it to your $PATH!
 
 Other dependencies are on a per-script basis.
 
+## Configuration
+
+`reload-desktop` now reads variables located in the defined `reload_config` file. By default, this will be `$HOME/.rhisk`. This can be altered by changing the `reload_config` variable in the script itself.
+
+There are currently four variables defined in the configuration file:
+
+	 - `reload_programs` -- programs that need to be restarted that can just be killed and restarted (e.g. Dunst, compton).
+	 - `reload_key_programs` -- programs that need keypresses to reload (currently limited to single presses).
+	 - `reload_keypresses` -- the keys to be pressed. key order must coincide with the order of programs.
+	 - `reload_commands` -- scripts or other commands that, upon reload, must only be executed once.
+
+### Example configuration
+
+	reload_programs=( compton dunst )
+	reload_key_programs=( emacs )
+	reload_keypresses=( F13 )
+	reload_commands=( foo.sh bar.sh )
+
+`reload-desktop` will kill and restart compton and dunst, press F13 in emacs (which is likely bound to a function to reload its configuration), then run the scripts foo.sh and bar.sh.
+
+Let it be noted that there are other programs that reload-desktop checks for and reconfigures on its own. Namely, these are
+
+	 - XTerm and other X Terminal Emulators that use .Xresources (define the config location in `reload-desktop`)
+	 - Termite
+	 - cava
+	 - tint2
+	 - tmux (define the config location in `reload-desktop`)
+
 ## Rhisk
 
 A script to easily switch between pre-configured whizkers templates.

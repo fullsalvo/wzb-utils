@@ -10,7 +10,7 @@
 # Declarations
 
 declare INDENT_STEP="   "
-declare choices=( )
+declare choices=""
 
 # Functions
 
@@ -101,9 +101,9 @@ usage ()
 compl_opts ()
 {
 	for t in $(whizkers -l); do
-		choices+=("${t##*/}")
+		choices+="${t##*/}\n"
 	done
-	echo "${choices[*]}"
+	printf "$choices"
 }
 
 
