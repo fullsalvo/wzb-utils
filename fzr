@@ -6,8 +6,8 @@
 
 fzr () {
 	local themes
-	mapfile -t themes < <(rhisk -c | fzf --multi)
-	(( ${#themes[@]} > 0 )) && rhisk"${themes[@]}"
+	mapfile -t themes < <(rhisk -c | fzf --multi --reverse --cycle)
+	(( ${#themes[@]} > 0 )) && rhisk "${themes[@]}"
 }
 
 fzr
