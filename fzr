@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Script name: fzr
+# Written by fulllsalvo
+# Depends on https://github.com/junegunn/fzf
+# Lists usable rhisk themes and allows selection via \t (tab)
+
+fzr () {
+	local themes
+	mapfile -t themes < <(rhisk -c | fzf --multi)
+	(( ${#themes[@]} > 0 )) && rhisk"${themes[@]}"
+}
+
+fzr
