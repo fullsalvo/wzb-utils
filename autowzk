@@ -96,7 +96,7 @@ declare col=6
 usage() {
     clear
     more <<-'HELP'
-autowzk - whizkers theme generator
+autowzk - sanpai theme generator
 Usage:
 autowzk [ command [ args... ] ] image file/URL
 If image URL provided, image will be saved at "~/.autowzk".
@@ -132,9 +132,9 @@ is_a_color() {
 wzk ()
 {
 	if [ "$#" -eq 0 ]; then
-	whizkers -e >/dev/null
+	$RHISK_COMM -e >/dev/null
 	else
-	whizkers -e "$@" >/dev/null
+	$RHISK_COMM -e "$@" >/dev/null
 	fi
 
 	[ "$?" -ne 0 ] && exit 1

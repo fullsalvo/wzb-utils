@@ -2,7 +2,7 @@
 # Script Name: rhisk
 # Written by fullsalvo
 # Combined with scripts written by Ethan Chan - https://github.com/metakirby5
-# Loads whizkers templates including those from subfolders
+# Loads sanpai templates including those from subfolders
 # Lists usable options based on category type
 # Currently used specifically for i3, bspwm, Openbox
 # Additional Dependencies: compton, dunst, tmux
@@ -25,9 +25,9 @@ hl () {
 wzk ()
 {
 	if (( $# == 0 )); then
-		whizkers -e >/dev/null
+		$RHISK_COMM -e >/dev/null
 	else
-		whizkers -e "$@" >/dev/null
+		$RHISK_COMM -e "$@" >/dev/null
 	fi
 
 	[[ "$?" != 0 ]] && exit 1
@@ -41,7 +41,7 @@ wzk ()
 theme ()
 {
 	local out=()
-	local tem=$(whizkers -l)
+	local tem=$($RHISK_COMM -l)
 	for i in "$@"; do
 		opt=$(printf "${tem}" | grep "${i}$")
 		if [[ -n $opt ]]; then
@@ -71,10 +71,10 @@ options ()
 {
 	clear
 	local result=""
-	if [[  -z $(whizkers -l) ]]; then
+	if [[  -z $($RHISK_COMM -l) ]]; then
 		err "You have no themes to display."
 	fi
-	for t in $(whizkers -l); do
+	for t in $($RHISK_COMM -l); do
 		result="$result
 $(display "$t" "")"
 	done
@@ -86,7 +86,7 @@ usage ()
 {
 	clear
 	more <<-'HELP'
-	rhisk - whizkers theme switch script
+	rhisk - sanpai theme switch script
 	Usage:
 	rhisk [ optional args... ] - Rhisk
 
@@ -100,7 +100,7 @@ usage ()
 
 compl_opts ()
 {
-	for t in $(whizkers -l); do
+	for t in $($RHISK_COMM -l); do
 		choices+="${t##*/}\n"
 	done
 	printf "$choices"
