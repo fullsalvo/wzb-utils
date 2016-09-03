@@ -1,5 +1,7 @@
 # Whizen Utilities
 
+![example](https://raw.githubusercontent.com/fullsalvo/wz-utils/master/images/example.gif "Example usage")
+
 Whizkers/Zenbu on their own are only file templaters. These scripts give you the ability to reload your themes on the fly!
 
 Just clone the repo and add it to your $PATH!
@@ -105,10 +107,6 @@ Usage:
 ## Reload-desktop
 
 A script to reload program/wm configurations in place. Currently only used via calls in the other two scripts.
-
-### Set the programs that reload
-
-There is an array `programs` in the script, intended to declare the programs that need to be killed and reopened. Other configs are loaded if the appropriate files are detected.
 
 ## TODO
 
