@@ -1,17 +1,23 @@
-# Whizkers Utilities
+# Whizen Utilities
 
-Whizkers on its own is only a file templater. These scripts give you the ability to reload your themes on the fly!
+Whizkers/Zenbu on their own are only file templaters. These scripts give you the ability to reload your themes on the fly!
 
 Just clone the repo and add it to your $PATH!
 
 ## Overall Dependencies
 
 * bash 4+
-* [whizkers](https://github.com/metakirby5/whizkers)
+* [whizkers](https://github.com/metakirby5/whizkers) *OR* [zenbu](https://github.com/metakirby5/zenbu)
 
 Other dependencies are on a per-script basis.
 
 ## Configuration
+
+### whizkers/zenbu
+
+For the sake of backwards compatibility, a new environment variable has been implemented. In your chosen shell's configuration file, you'll need to define the variable `RHISK_COMM` via `export RHISK_COMM="<whizkers/zenbu>"`.
+
+### reload-desktop
 
 `reload-desktop` now reads variables located in the defined `reload_config` file. By default, this will be `$HOME/.rhisk`. This can be altered by changing the `reload_config` variable in the script itself.
 
@@ -55,6 +61,10 @@ Usage:
       -o                      Show theme options
       -c                      Show all options uncategorized
 
+### fzr
+
+For those using junegunn's [fzf](https://github.com/junegunn/fzf), `fzr` allows you to select `rhisk` theme options from the list. Select multiple by using *TAB*, order being preserved.
+
 ### Autocomplete
 
 #### Bash
@@ -65,9 +75,9 @@ The file `autocomplete` adds tab completion of the options for `rhisk`. To use i
 
 Similarly to Bash, you must source the file `autocomplete` in your .zshrc. However, before that, you must add the commands `autoload -U +X bashcompinit && bashcompinit` in order to use bash-style autocompletion in your shell.
 
-## Autowzk
+## Autowzb
 
-A script to generate colors and show a preview via whizkers and colorz2.
+A script to generate colors and show a preview via whizkers/zenbu and colorz2.
 
 ### Dependency:
 * [colorz2](https://github.com/metakirby5/colorz2)
@@ -126,4 +136,4 @@ There is an array `programs` in the script, intended to declare the programs tha
 
 ## Thanks to
 
-[metakirby5](https://github.com/metakirby5) for making any of this possible and creating whizkers.
+[metakirby5](https://github.com/metakirby5) for making any of this possible and creating whizkers and zenbu.
