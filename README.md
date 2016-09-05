@@ -86,9 +86,9 @@ A script to generate colors and show a preview via whizkers/zenbu and colorz2.
 
 Usage:
 
-    autowzk - whizkers theme generator
+    autowzb - whizkers theme generator
     Usage:
-    autowzk [ command [ args... ] ] image file/URL
+    autowzb [ command [ args... ] ] image file/URL
     If image URL provided, image will be saved at "~/.autowzk".
     Available colors: black, red,  green, yellow,
                       blue, magenta, cyan, white
