@@ -49,11 +49,11 @@ Let it be noted that there are other programs that reload-desktop checks for and
 
 ## Rhisk
 
-A script to easily switch between pre-configured whizkers templates.
+A script to easily switch between pre-configured whizkers/zenbu templates.
 
 Usage:
 
-    rhisk - whizkers theme switch script
+    rhisk - whizkers/zenbu theme switch script
     Usage:
       rhisk [ optional args... ] - Rhisk
 
@@ -86,10 +86,10 @@ A script to generate colors and show a preview via whizkers/zenbu and colorz2.
 
 Usage:
 
-    autowzb - whizkers theme generator
+    autowzb - whizkers/zenbu theme generator
     Usage:
     autowzb [ command [ args... ] ] image file/URL
-    If image URL provided, image will be saved at "~/.autowzk".
+    If image URL provided, image will be saved at "~/.autowzb".
     Available colors: black, red,  green, yellow,
                       blue, magenta, cyan, white
 
@@ -110,9 +110,8 @@ A script to reload program/wm configurations in place. Currently only used via c
 
 ## TODO
 
-* Autowzk
+* Autowzb
 	- [ ] Allow for template generation
-	- [ ] Consolidate dependencies
 	- [ ] Sort colors
 
 * Reload-desktop
