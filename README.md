@@ -79,10 +79,10 @@ Similarly to Bash, you must source the file `autocomplete` in your .zshrc. Howev
 
 ## Autowzb
 
-A script to generate colors and show a preview via whizkers/zenbu and colorz2.
+A script to generate colors and show a preview via whizkers/zenbu and colorz.
 
 ### Dependency:
-* [colorz2](https://github.com/metakirby5/colorz2)
+* [colorz](https://github.com/metakirby5/colorz)
 
 Usage:
 

@@ -2,9 +2,9 @@
 # Script Name: autowzk
 # Written by Ethan Chan - https://github.com/metakirby5
 # Heavily modified by fullsalvo
-# Runs colorz2 on an image file to get 8 colors, then stuffs those colors
+# Runs colorz on an image file to get 8 colors, then stuffs those colors
 # through wzk.
-# Dependency: colorz2 - https://github.com/metakirby5/colorz2
+# Dependency: colorz - https://github.com/metakirby5/colorz
 
 SRC=~/.autowzk
 
@@ -158,7 +158,7 @@ template ()
 	echo "Using primary = $primary, secondary = $secondary..."
 	echo
 
-	colors="$(colorz2 --no-preview -n $col "$SRC")"
+	colors="$(colorz --no-preview -n $col "$SRC")"
 	[ "${PIPESTATUS[0]}" -ne 0 ] && exit 1
 
 	yaml="$(echo \
