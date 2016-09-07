@@ -108,6 +108,12 @@ main ()
 		Openbox)
 			openbox --reconfigure &>/dev/null &
 			;;
+		Awesome)
+			echo 'awesome.restart()' | awesome-client &>/dev/null &
+			;;
+		herbstluftw)
+			herbstclient reload &>/dev/null &
+			;;
 	esac
 
 	# Tint2

@@ -123,13 +123,13 @@ A script to reload program/wm configurations in place. Currently only used via c
 			- [x] Termite
 			- [ ] Terminator/Gnome-Terminal
 			- [ ] st + [shit](https://github.com/neeasade/shit)
-		- [ ] Window Managers
+		- Window Managers
 			- [x] i3
 			- [ ] bspwm
 			- [x] Openbox
-			- [ ] Awesome
-			- [ ] herbstluftwm
-			- [ ] The many other popular wms not listed
+			- [x] Awesome
+			- [x] herbstluftwm
+			- [ ] etc
 
 ## Thanks to
 
