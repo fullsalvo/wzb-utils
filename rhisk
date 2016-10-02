@@ -2,7 +2,7 @@
 # Script Name: rhisk
 # Written by fullsalvo
 # Combined with scripts written by Ethan Chan - https://github.com/metakirby5
-# Loads sanpai templates including those from subfolders
+# Loads zenbu templates including those from subfolders
 # Lists usable options based on category type
 # Currently used specifically for i3, bspwm, Openbox
 # Additional Dependencies: compton, dunst, tmux

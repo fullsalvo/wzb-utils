@@ -1,0 +1,130 @@
+#!/usr/bin/env python
+#Author: fullsalvo
+
+"""
+Parses .Xresources-formatted text and creates a whizkers/zenbu
+yaml-formatted template for colors. Can read from file or from
+stdin.
+"""
+
+from __future__ import absolute_import, division, print_function
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+import os, re, sys
+
+home = os.getenv('HOME')
+confdir = os.path.join(home,'.config')
+wzdir = os.path.join(confdir, 'zenbu')
+sets = 'variable_sets/'
+templatevar = """colors:
+  background:         "{0}"
+  foreground:         "{1}"
+  cursor:             "{2}"
+  black:
+    normal:           "{3}"
+    bold:             "{11}"
+  red:
+    normal:           "{4}"
+    bold:             "{12}"
+  green:
+    normal:           "{5}"
+    bold:             "{13}"
+  yellow:
+    normal:           "{6}"
+    bold:             "{14}"
+  blue:
+    normal:           "{7}"
+    bold:             "{15}"
+  magenta:
+    normal:           "{8}"
+    bold:             "{16}"
+  cyan:
+    normal:           "{9}"
+    bold:             "{17}"
+  white:
+    normal:           "{10}"
+    bold:             "{18}"
+"""
+
+class NoInputError(Exception):
+    """
+    Exception raised when no file was specified and there was no input in stdin
+    """
+    pass
+
+def args():
+    parser = ArgumentParser(description=__doc__,
+                            formatter_class=RawDescriptionHelpFormatter)
+
+    parser.add_argument('-o',
+                        help="""
+                        output file name specification
+                        """,
+                        dest='outfile')
+
+    parser.add_argument('-i',
+                        help="""
+                        input file name specification
+                        """,
+                        dest='infile')
+
+    parser.add_argument('-c',
+                        help="""
+                        zenbu config folder specification, if not using
+                        the default. (Default: %s)
+                        """ % wzdir,
+                        dest='config',
+                        default=wzdir)
+
+    parser.add_argument('-s',
+                        help="""
+                        variable set directory, if not using the default.
+                        (Default: %s)
+                        """ % sets,
+                        dest='sets',
+                        default=sets)
+
+    return parser.parse_args()
+
+def colorgather(xres):
+    col = []
+    col.append(colorgrab('background', xres))
+    col.append(colorgrab('foreground', xres))
+    cur = colorgrab('cursorColor', xres)
+    if cur:
+        col.append(cur)
+    else:
+        col.append(colorgrab('foreground', xres))
+    for i in range(16):
+        col.append(colorgrab('.*color' + str(i) + ':', xres))
+    return col
+
+def colorgrab(pat, xres):
+    for line in xres.splitlines():
+        if re.search(pat,line):
+            color = line.split()
+            return color[-1]
+
+def template(xres):
+    col = colorgather(xres)
+    filledtemp = templatevar.format(*col)
+    return filledtemp
+
+def main():
+    if arguments.infile:
+        xres = open(arguments.infile, 'r')
+    elif not sys.stdin.isatty():
+        xres = sys.stdin
+    else:
+        raise(NoInputError('There was no provided input.'))
+    xres = xres.read()
+    ftemp = template(xres)
+    print(ftemp)
+    if arguments.outfile:
+        out = os.path.join(arguments.config, arguments.sets + \
+                           arguments.outfile)
+        tempwrite = open(out, 'w')
+        tempwrite.write(ftemp)
+
+if __name__ == '__main__':
+    arguments = args()
+    main()
