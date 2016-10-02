@@ -108,6 +108,28 @@ Usage:
 
 A script to reload program/wm configurations in place. Currently only used via calls in the other two scripts.
 
+## WZGrab
+
+A python script that parses Xresources text input from file or stdin and outputs a zenbu/whizkers-style
+color template.
+
+Usage:
+
+	usage: wzgrab [-h] [-o OUTFILE] [-i INFILE] [-c CONFIG] [-s SETS]
+
+	Parses .Xresources-formatted text and creates a whizkers/zenbu
+	yaml-formatted template for colors. Can read from file or from
+	stdin.
+
+	optional arguments:
+	  -h, --help  show this help message and exit
+	  -o OUTFILE  output file name specification
+	  -i INFILE   input file name specification
+	  -c CONFIG   zenbu config folder specification, if not using the default.
+				  (Default: /home/fullsalvo/.config/zenbu)
+	  -s SETS     variable set directory, if not using the default. (Default:
+				  variable_sets/)
+
 ## TODO
 
 * Autowzb
@@ -122,7 +144,7 @@ A script to reload program/wm configurations in place. Currently only used via c
 			- [x] URxvt/Rxvt/XTerm
 			- [x] Termite
 			- [ ] Terminator/Gnome-Terminal
-			- [ ] st + [shit](https://github.com/neeasade/shit)
+			- [ ] st + [xst](https://github.com/neeasade/xst)
 		- Window Managers
 			- [x] i3
 			- [ ] bspwm
@@ -130,6 +152,10 @@ A script to reload program/wm configurations in place. Currently only used via c
 			- [x] Awesome
 			- [x] herbstluftwm
 			- [ ] etc
+
+* WZGrab
+    - [ ] Allow for optional additions to templates
+	- [ ] Add a utility to automatically switch to the new scheme
 
 ## Thanks to
 
