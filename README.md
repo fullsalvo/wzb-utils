@@ -25,10 +25,10 @@ For the sake of backwards compatibility, a new environment variable has been imp
 
 There are currently four variables defined in the configuration file:
 
-	 - `reload_programs` -- programs that need to be restarted that can just be killed and restarted (e.g. Dunst, compton).
-	 - `reload_key_programs` -- programs that need keypresses to reload (currently limited to single presses).
-	 - `reload_keypresses` -- the keys to be pressed. key order must coincide with the order of programs.
-	 - `reload_commands` -- scripts or other commands that, upon reload, must only be executed once.
+- `reload_programs` -- programs that need to be restarted that can just be killed and restarted (e.g. Dunst, compton).
+- `reload_key_programs` -- programs that need keypresses to reload (currently limited to single presses).
+- `reload_keypresses` -- the keys to be pressed. key order must coincide with the order of programs.
+- `reload_commands` -- scripts or other commands that, upon reload, must only be executed once.
 
 ### Example configuration
 
