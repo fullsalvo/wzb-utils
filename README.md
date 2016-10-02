@@ -47,6 +47,8 @@ Let it be noted that there are other programs that reload-desktop checks for and
 	 - tint2
 	 - tmux (define the config location in `reload-desktop`)
 
+# Script Information
+
 ## Rhisk
 
 A script to easily switch between pre-configured whizkers/zenbu templates.
@@ -129,33 +131,6 @@ Usage:
 				  (Default: /home/fullsalvo/.config/zenbu)
 	  -s SETS     variable set directory, if not using the default. (Default:
 				  variable_sets/)
-
-## TODO
-
-* Autowzb
-	- [ ] Allow for template generation
-	- [ ] Sort colors
-
-* Reload-desktop
-	- [x] Add font change controls
-	    - [x] Make font change optional (Currently change function script variable)
-	- [ ] Expand this to more wms/programs
-		- [ ] Terminals
-			- [x] URxvt/Rxvt/XTerm
-			- [x] Termite
-			- [ ] Terminator/Gnome-Terminal
-			- [ ] st + [xst](https://github.com/neeasade/xst)
-		- Window Managers
-			- [x] i3
-			- [ ] bspwm
-			- [x] Openbox
-			- [x] Awesome
-			- [x] herbstluftwm
-			- [ ] etc
-
-* WZGrab
-    - [ ] Allow for optional additions to templates
-	- [ ] Add a utility to automatically switch to the new scheme
 
 ## Thanks to
 
