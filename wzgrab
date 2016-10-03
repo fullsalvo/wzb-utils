@@ -83,7 +83,7 @@ def args():
                         dest='sets',
                         default=sets)
 
-    return parser.parse_args()
+    return parser, parser.parse_args()
 
 def colorgather(xres):
     col = []
@@ -110,21 +110,24 @@ def template(xres):
     return filledtemp
 
 def main():
-    if arguments.infile:
-        xres = open(arguments.infile, 'r')
-    elif not sys.stdin.isatty():
-        xres = sys.stdin
-    else:
-        raise(NoInputError('There was no provided input.'))
-    xres = xres.read()
-    ftemp = template(xres)
-    print(ftemp)
-    if arguments.outfile:
-        out = os.path.join(arguments.config, arguments.sets + \
-                           arguments.outfile)
-        tempwrite = open(out, 'w')
-        tempwrite.write(ftemp)
+    try:
+        if arguments.infile:
+            xres = open(arguments.infile, 'r')
+        elif not sys.stdin.isatty():
+            xres = sys.stdin
+        else:
+            raise(NoInputError('There was no provided input.'))
+        xres = xres.read()
+        ftemp = template(xres)
+        print(ftemp)
+        if arguments.outfile:
+            out = os.path.join(arguments.config, arguments.sets + \
+                               arguments.outfile)
+            tempwrite = open(out, 'w')
+            tempwrite.write(ftemp)
+    except:
+        parser.print_help()
 
 if __name__ == '__main__':
-    arguments = args()
+    parser, arguments = args()
     main()
