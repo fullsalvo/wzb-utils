@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Script Name: autowzk
+# Script Name: autowzb
 # Written by Ethan Chan - https://github.com/metakirby5
 # Heavily modified by fullsalvo
 # Runs colorz on an image file to get 8 colors, then stuffs those colors
-# through wzk.
+# through wzb.
 # Dependency: colorz - https://github.com/metakirby5/colorz
 
-SRC=~/.autowzk
+SRC=~/.autowzb
 
 COLORS=(
 	black
@@ -96,10 +96,10 @@ declare col=6
 usage() {
     clear
     more <<-'HELP'
-autowzk - sanpai theme generator
+autowzb - sanpai theme generator
 Usage:
-autowzk [ command [ args... ] ] image file/URL
-If image URL provided, image will be saved at "~/.autowzk".
+autowzb [ command [ args... ] ] image file/URL
+If image URL provided, image will be saved at "~/.autowzb".
 Available colors: black, red,  green, yellow,
                   blue, magenta, cyan, white
 
@@ -129,7 +129,7 @@ is_a_color() {
 	return $?
 }
 
-wzk ()
+wzb ()
 {
 	if [ "$#" -eq 0 ]; then
 	$RHISK_COMM -e >/dev/null
@@ -171,8 +171,8 @@ xargs printf "$temp")"
 	echo "$yaml"
 	echo
 
-	echo "Running wzk..."
-	wzk <(echo "$yaml")
+	echo "Running wzb..."
+	wzb <(echo "$yaml")
 
 	if [[ ! -z $(which feh) ]];then
 	feh --bg-fill --no-fehbg "$SRC"

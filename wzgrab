@@ -83,6 +83,14 @@ def args():
                         dest='sets',
                         default=sets)
 
+    parser.add_argument('-a',
+                        help="""
+                        additional variables to be added to the template.
+                        """,
+                        action='append',
+                        nargs=2,
+                        metavar=('var','value'))
+
     return parser, parser.parse_args()
 
 def colorgather(xres):
@@ -107,6 +115,13 @@ def colorgrab(pat, xres):
 def template(xres):
     col = colorgather(xres)
     filledtemp = templatevar.format(*col)
+    for addition in arguments.a:
+        if len(addition[0]) < 21:
+            spacing = (22-(len(addition[0])+1))*" "
+        else:
+            spacing = " "
+        newvartemp = addition[0] + ":" + spacing + addition[1] + "\n"
+        filledtemp += newvartemp
     return filledtemp
 
 def main():
@@ -125,7 +140,8 @@ def main():
                                arguments.outfile)
             tempwrite = open(out, 'w')
             tempwrite.write(ftemp)
-    except:
+    except Exception as e:
+        print(e)
         parser.print_help()
 
 if __name__ == '__main__':
