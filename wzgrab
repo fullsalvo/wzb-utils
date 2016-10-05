@@ -9,12 +9,13 @@ stdin.
 
 from __future__ import absolute_import, division, print_function
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-import os, re, sys
+from colorlog import ColoredFormatter
+import os, re, sys, logging
 
 home = os.getenv('HOME')
 confdir = os.path.join(home,'.config')
 wzdir = os.path.join(confdir, 'zenbu')
-sets = 'variable_sets/'
+sets = 'variable_sets'
 templatevar = """colors:
   background:         "{0}"
   foreground:         "{1}"
@@ -45,11 +46,30 @@ templatevar = """colors:
     bold:             "{18}"
 """
 
-class NoInputError(Exception):
+# Logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.NullHandler())
+
+class IOException(Exception):
     """
     Exception raised when no file was specified and there was no input in stdin
     """
-    pass
+    def __init__(self, io, message=None):
+        super(IOException, self).__init__()
+        self.message = message
+        self.io = io
+
+class NoInfileError(IOException):
+    def __str__(self):
+        msg = "No file of name \"%s\"" % self.io
+        if self.message:
+            msg += "\n   [%s]" % self.message
+        return msg
+
+class NoInputError(IOException):
+    def __str__(self):
+        return "No input file/text was provided."
 
 def args():
     parser = ArgumentParser(description=__doc__,
@@ -57,7 +77,7 @@ def args():
 
     parser.add_argument('-o',
                         help="""
-                        output file name specification
+                        output file name specification (basename only)
                         """,
                         dest='outfile')
 
@@ -77,7 +97,8 @@ def args():
 
     parser.add_argument('-s',
                         help="""
-                        variable set directory, if not using the default.
+                        variable set directory relative to zenbu config directory,
+                        if not using the default sets location.
                         (Default: %s)
                         """ % sets,
                         dest='sets',
@@ -115,34 +136,45 @@ def colorgrab(pat, xres):
 def template(xres):
     col = colorgather(xres)
     filledtemp = templatevar.format(*col)
-    for addition in arguments.a:
-        if len(addition[0]) < 21:
-            spacing = (22-(len(addition[0])+1))*" "
-        else:
-            spacing = " "
-        newvartemp = addition[0] + ":" + spacing + addition[1] + "\n"
-        filledtemp += newvartemp
+    if arguments.a:
+        for addition in arguments.a:
+            if len(addition[0]) < 21:
+                spacing = (22-(len(addition[0])+1))*" "
+            else:
+                spacing = " "
+            newvartemp = addition[0] + ":" + spacing + addition[1] + "\n"
+            filledtemp += newvartemp
     return filledtemp
 
 def main():
+    logout = logging.StreamHandler(sys.stdout)
+    logout.setLevel(logging.DEBUG)
+    logout.setFormatter(ColoredFormatter("%(log_color)s%(message)s"))
+    logger.addHandler(logout)
+
     try:
         if arguments.infile:
-            xres = open(arguments.infile, 'r')
+            if not os.path.isfile(arguments.infile):
+                raise(NoInfileError(arguments.infile))
+            else:
+                xres = open(arguments.infile, 'r')
         elif not sys.stdin.isatty():
             xres = sys.stdin
         else:
-            raise(NoInputError('There was no provided input.'))
+            raise(NoInputError(None))
         xres = xres.read()
         ftemp = template(xres)
         print(ftemp)
         if arguments.outfile:
-            out = os.path.join(arguments.config, arguments.sets + \
+            out = os.path.join(arguments.config, arguments.sets + "/" + \
                                arguments.outfile)
             tempwrite = open(out, 'w')
             tempwrite.write(ftemp)
-    except Exception as e:
-        print(e)
+    except NoInputError as e:
+        logger.error(NoInputError(None, e))
         parser.print_help()
+    except NoInfileError as e:
+        logger.error(e)
 
 if __name__ == '__main__':
     parser, arguments = args()
