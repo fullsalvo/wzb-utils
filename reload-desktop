@@ -129,7 +129,7 @@ main ()
 
 	#sxhkd
 	#reload bindings
-	if [[ -n $(pgrep sxhkd -t tty1) ]]; then
+	if [[ -n $(pgrep sxhkd) ]]; then
 		killall -s USR1 sxhkd &>/dev/null &
 	fi
 }
