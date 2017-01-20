@@ -132,6 +132,12 @@ main ()
 	if [[ -n $(pgrep sxhkd) ]]; then
 		killall -s USR1 sxhkd &>/dev/null &
 	fi
+
+	#herbstluftwm
+	#reload
+	if [[ -n $(pgrep herbstclient) ]]; then
+		herbstclient reload &
+	fi
 }
 
 main
